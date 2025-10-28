@@ -111,6 +111,7 @@ ingestion_tenant_shard_size: 3
 ingestion_max_attribute_bytes: 1000
 max_traces_per_user: 1
 max_global_traces_per_user: 2
+max_block_duration: 30m
 forwarders: ['foo']
 metrics_generator_ring_size: 3
 metrics_generator_processors: ['span-metrics']
@@ -174,6 +175,7 @@ defaults:
     burst_size_bytes: 67890
     max_traces_per_user: 1
     max_global_traces_per_user: 2
+    max_block_duration: 30m
     tenant_shard_size: 3
     max_attribute_bytes: 1000
   read:
@@ -405,6 +407,7 @@ func generateTestLegacyOverrides() LegacyOverrides {
 
 		MaxLocalTracesPerUser:  1000,
 		MaxGlobalTracesPerUser: 2000,
+		MaxBlockDuration:       30 * time.Minute,
 
 		Forwarders: []string{"forwarder-1", "forwarder-2"},
 

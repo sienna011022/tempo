@@ -186,7 +186,11 @@ func (i *Ingester) cutOneInstanceToWal(instance *instance, immediate bool) {
 	}
 
 	// see if it's ready to cut a block
-	blockID, err := instance.CutBlockIfReady(i.cfg.MaxBlockDuration, i.cfg.MaxBlockBytes, immediate)
+	maxBlockDuration := i.overrides.IngesterMaxBlockDuration(instance.instanceID)
+	if maxBlockDuration == 0 {
+		maxBlockDuration = i.cfg.MaxBlockDuration
+	}
+	blockID, err := instance.CutBlockIfReady(maxBlockDuration, i.cfg.MaxBlockBytes, immediate)
 	if err != nil {
 		level.Error(log.WithUserID(instance.instanceID, log.Logger)).Log("msg", "failed to cut block", "err", err)
 		return

@@ -653,3 +653,30 @@ func (m mockValidator) Validate(config *Overrides) error {
 	}
 	return nil
 }
+
+func TestIngesterMaxBlockDuration(t *testing.T) {
+	defaultLimits := Overrides{
+		Ingestion: IngestionOverrides{
+			MaxBlockDuration: 30 * time.Minute,
+		},
+	}
+
+	// Create a mock runtime config manager that returns our test overrides
+	overrides := &runtimeConfigOverridesManager{
+		defaultLimits: &defaultLimits,
+	}
+
+	// Test default value for user without override
+	result := overrides.IngesterMaxBlockDuration("user2")
+	assert.Equal(t, 30*time.Minute, result)
+
+	// Test with manual override simulation
+	overrides.defaultLimits = &Overrides{
+		Ingestion: IngestionOverrides{
+			MaxBlockDuration: 30 * time.Minute,
+		},
+	}
+
+	// Create a simple test that verifies the method exists and returns the default
+	assert.Equal(t, 30*time.Minute, overrides.IngesterMaxBlockDuration("anyuser"))
+}

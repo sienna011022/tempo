@@ -20,6 +20,7 @@ func (c *Overrides) toLegacy() LegacyOverrides {
 		IngestionTenantShardSize:   c.Ingestion.TenantShardSize,
 		MaxLocalTracesPerUser:      c.Ingestion.MaxLocalTracesPerUser,
 		MaxGlobalTracesPerUser:     c.Ingestion.MaxGlobalTracesPerUser,
+		MaxBlockDuration:           c.Ingestion.MaxBlockDuration,
 		IngestionMaxAttributeBytes: c.Ingestion.MaxAttributeBytes,
 		IngestionArtificialDelay:   c.Ingestion.ArtificialDelay,
 
@@ -90,8 +91,9 @@ type LegacyOverrides struct {
 	IngestionArtificialDelay   *time.Duration `yaml:"ingestion_artificial_delay" json:"ingestion_artificial_delay"`
 
 	// Ingester enforced limits.
-	MaxLocalTracesPerUser  int `yaml:"max_traces_per_user" json:"max_traces_per_user"`
-	MaxGlobalTracesPerUser int `yaml:"max_global_traces_per_user" json:"max_global_traces_per_user"`
+	MaxLocalTracesPerUser  int           `yaml:"max_traces_per_user" json:"max_traces_per_user"`
+	MaxGlobalTracesPerUser int           `yaml:"max_global_traces_per_user" json:"max_global_traces_per_user"`
+	MaxBlockDuration       time.Duration `yaml:"max_block_duration" json:"max_block_duration"`
 
 	// Forwarders
 	Forwarders []string `yaml:"forwarders" json:"forwarders"`
@@ -162,6 +164,7 @@ func (l *LegacyOverrides) toNewLimits() Overrides {
 			BurstSizeBytes:         l.IngestionBurstSizeBytes,
 			MaxLocalTracesPerUser:  l.MaxLocalTracesPerUser,
 			MaxGlobalTracesPerUser: l.MaxGlobalTracesPerUser,
+			MaxBlockDuration:       l.MaxBlockDuration,
 			TenantShardSize:        l.IngestionTenantShardSize,
 			MaxAttributeBytes:      l.IngestionMaxAttributeBytes,
 			ArtificialDelay:        l.IngestionArtificialDelay,

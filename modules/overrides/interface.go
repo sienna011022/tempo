@@ -78,6 +78,7 @@ type Interface interface {
 	CompactionDisabled(userID string) bool
 	MaxSearchDuration(userID string) time.Duration
 	MaxMetricsDuration(userID string) time.Duration
+	IngesterMaxBlockDuration(userID string) time.Duration
 	DedicatedColumns(userID string) backend.DedicatedColumns
 	UnsafeQueryHints(userID string) bool
 	CostAttributionMaxCardinality(userID string) uint64

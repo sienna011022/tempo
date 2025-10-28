@@ -73,8 +73,9 @@ type IngestionOverrides struct {
 	BurstSizeBytes int    `yaml:"burst_size_bytes,omitempty" json:"burst_size_bytes,omitempty"`
 
 	// Ingester enforced limits.
-	MaxLocalTracesPerUser  int `yaml:"max_traces_per_user,omitempty" json:"max_traces_per_user,omitempty"`
-	MaxGlobalTracesPerUser int `yaml:"max_global_traces_per_user,omitempty" json:"max_global_traces_per_user,omitempty"`
+	MaxLocalTracesPerUser  int           `yaml:"max_traces_per_user,omitempty" json:"max_traces_per_user,omitempty"`
+	MaxGlobalTracesPerUser int           `yaml:"max_global_traces_per_user,omitempty" json:"max_global_traces_per_user,omitempty"`
+	MaxBlockDuration       time.Duration `yaml:"max_block_duration,omitempty" json:"max_block_duration,omitempty"`
 
 	TenantShardSize   int            `yaml:"tenant_shard_size,omitempty" json:"tenant_shard_size,omitempty"`
 	MaxAttributeBytes int            `yaml:"max_attribute_bytes,omitempty" json:"max_attribute_bytes,omitempty"`
@@ -275,6 +276,7 @@ func (c *Config) RegisterFlagsAndApplyDefaults(f *flag.FlagSet) {
 	f.IntVar(&c.Defaults.Ingestion.MaxLocalTracesPerUser, "ingester.max-traces-per-user", 10e3, "Maximum number of active traces per user, per ingester. 0 to disable.")
 	f.IntVar(&c.Defaults.Ingestion.MaxGlobalTracesPerUser, "ingester.max-global-traces-per-user", 0, "Maximum number of active traces per user, across the cluster. 0 to disable.")
 	f.IntVar(&c.Defaults.Global.MaxBytesPerTrace, "ingester.max-bytes-per-trace", 50e5, "Maximum size of a trace in bytes.  0 to disable.")
+	f.DurationVar(&c.Defaults.Ingestion.MaxBlockDuration, "ingester.max-block-duration", 30*time.Minute, "Maximum duration which the head block can be appended to before cutting it.")
 
 	// Querier limits
 	f.IntVar(&c.Defaults.Read.MaxBytesPerTagValuesQuery, "querier.max-bytes-per-tag-values-query", 10e5, "Maximum size of response for a tag-values query. Used mainly to limit large the number of values associated with a particular tag")

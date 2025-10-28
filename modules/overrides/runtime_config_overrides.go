@@ -14,14 +14,13 @@ import (
 	"github.com/go-kit/log/level"
 	"github.com/grafana/dskit/runtimeconfig"
 	"github.com/grafana/dskit/services"
-	"github.com/prometheus/client_golang/prometheus"
-	"gopkg.in/yaml.v2"
-
 	"github.com/grafana/tempo/pkg/sharedconfig"
 	filterconfig "github.com/grafana/tempo/pkg/spanfilter/config"
 	"github.com/grafana/tempo/pkg/util"
 	"github.com/grafana/tempo/pkg/util/log"
 	"github.com/grafana/tempo/tempodb/backend"
+	"github.com/prometheus/client_golang/prometheus"
+	"gopkg.in/yaml.v2"
 )
 
 type Validator interface {
@@ -381,6 +380,10 @@ func (o *runtimeConfigOverridesManager) MaxSearchDuration(userID string) time.Du
 
 func (o *runtimeConfigOverridesManager) MaxMetricsDuration(userID string) time.Duration {
 	return time.Duration(o.getOverridesForUser(userID).Read.MaxMetricsDuration)
+}
+
+func (o *runtimeConfigOverridesManager) IngesterMaxBlockDuration(userID string) time.Duration {
+	return o.getOverridesForUser(userID).Ingestion.MaxBlockDuration
 }
 
 // MetricsGeneratorIngestionSlack is the max amount of time passed since a span's end time
